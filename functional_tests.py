@@ -7,7 +7,7 @@ from indexes import ACTIVITY_NAME_ROW_IDX
 from messages import *
 
 INPUT_FILE = '/home/madtyn/sandbox/kills/sample_input.ods'
-OUTPUT_FILE = 'output.pdf'
+OUTPUT_FILE = '/home/madtyn/sandbox/kills/output.txt'
 
 # The user cristofania executes CRIS
 process = sp.Popen('/usr/bin/python3 /home/madtyn/PycharmProjects/cris/cris.py test', stdin=sp.PIPE, stdout=sp.PIPE, shell=True,
@@ -29,7 +29,8 @@ def check_regular_line(expected_line, group=False):
     is_eof = f'{SUCCESS_MSG}\n'.encode().rstrip(b'\n') in printed.rstrip(b'\n')
     if is_eof:
         return False
-    if printed.strip() == b'' and group:
+    group_end_condition = printed.strip() == b'' or b'Nombre del escolar' in printed.strip()
+    if group and group_end_condition:
         return False
 
     is_expected_line = f'{expected_line}\n'.encode().rstrip(b'\n') in printed.rstrip(b'\n')
@@ -45,7 +46,7 @@ def test_input_path_file(asking_msg, asked_file):
     # The user inputs the input file name
     process.stdin.write(asked_file.encode() + b'\n')
     process.stdin.flush()
-    check_next_line(CHECK_INPUT_PATH, 'No hubo respuesta a la introducción de ruta')
+    check_next_line(CHECK_FILE_PATH, 'No hubo respuesta a la introducción de ruta')
     check_next_line(asked_file, 'La ruta y nombre de fichero no coinciden con lo esperado')
 
 

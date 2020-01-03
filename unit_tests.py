@@ -1,4 +1,5 @@
 import unittest
+from io import StringIO
 
 from cris import process_student, is_valid
 from models import CommonInfo, Receipt, StudentMonth
@@ -30,12 +31,13 @@ class MyTestCase(unittest.TestCase):
                '15', 'X', 'S',
                'X', 'X', 'N',
                ]
-        result = process_student(self.info, row)
-        assert type(result) == list and all(type(x) is Receipt for x in result)
+        s = StringIO()
+        result = process_student(self.info, row, s)
+        assert type(result) == list and all(x in s for x in result)
         ref_row = []
         for i in range(1, 10):
-            sm = StudentMonth(row[i:i + 3])
-            if is_valid():
+            sm = StudentMonth(*row[i:i + 3])
+            if is_valid(sm):
                 ref_row.append(sm)
 
         assert len(result) == len(ref_row)
