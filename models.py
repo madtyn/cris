@@ -76,8 +76,7 @@ class CommonInfo(object):
 
 
 class Receipt(object):
-    tag = """----------------
-Nombre del escolar: {student}
+    tag = """Nombre del escolar: {student}
 Número de recibo: {number}
 Precio mensualidad: {quota}
     
@@ -86,7 +85,7 @@ citado las cantidades que se desglosan en este recibo en concepto de pago de la 
 realizada durante el curso {school_year}\n
     
 A Coruña, {day} de {month} del {year}
-----------------
+--------------------------------------
 """
 
     def __init__(self, info, student, student_month):
