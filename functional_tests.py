@@ -7,7 +7,7 @@ from indexes import ACTIVITY_NAME_ROW_IDX
 from messages import *
 
 INPUT_FILE = '/home/madtyn/sandbox/kills/sample_input.ods'
-OUTPUT_FILE = '/home/madtyn/sandbox/kills/output.txt'
+OUTPUT_FILE = '/home/madtyn/sandbox/kills/output.pdf'
 
 # The user cristofania executes CRIS
 process = sp.Popen('/usr/bin/python3 /home/madtyn/PycharmProjects/cris/cris.py test', stdin=sp.PIPE, stdout=sp.PIPE, shell=True,

@@ -47,17 +47,17 @@ class Months(Enum):
         if self.__class__ is other.__class__:
             return self.value >= other.value
         return NotImplemented
-    
+
     def __gt__(self, other):
         if self.__class__ is other.__class__:
             return self.value > other.value
         return NotImplemented
-    
+
     def __le__(self, other):
         if self.__class__ is other.__class__:
             return self.value <= other.value
         return NotImplemented
-    
+
     def __lt__(self, other):
         if self.__class__ is other.__class__:
             return self.value < other.value
@@ -76,17 +76,17 @@ class CommonInfo(object):
 
 
 class Receipt(object):
-    tag = """Nombre del escolar: {student}
-Número de recibo: {number}
-Precio mensualidad: {quota}
-    
-{teacher}, con NIF {nif}, ha recibido de los responsables del alumno/a anteriormente\n
-citado las cantidades que se desglosan en este recibo en concepto de pago de la actividad "{activity}",\n
-realizada durante el curso {school_year}\n
-    
-A Coruña, {day} de {month} del {year}
---------------------------------------
-"""
+    header_tag = [
+        "Nombre del escolar: {student}",
+        "Número de recibo: {number}",
+        "Precio mensualidad: {quota}",
+    ]
+    body_tag = [
+        "{teacher}, con NIF {nif}, ha recibido de los responsables del alumno / a anteriormente citado las",
+        "cantidades que se desglosan en este recibo en concepto de pago de la actividad \"{activity}\",",
+        "realizada durante el curso {school_year}",
+    ]
+    sign_tag = ["A Coruña, {day} de {month} del {year}", ]
 
     def __init__(self, info, student, student_month):
         self.info = info
@@ -94,21 +94,35 @@ A Coruña, {day} de {month} del {year}
         self.number = student_month.number
         self.quota = student_month.quota
 
-    def template(self):
+    def header(self):
         d = {
-            'teacher': self.info.teacher,
-            'nif': self.info.nif,
-            'school_year': self.info.school_year,
-            'activity': self.info.activity,
             'student': self.student,
             'number': self.number,
             'quota': self.quota,
+        }
+
+        for line in self.header_tag:
+            yield line.format(**d)
+
+    def body(self):
+        d = {
+            'teacher': self.info.teacher,
+            'nif': self.info.nif,
+            'activity': self.info.activity,
+            'school_year': self.info.school_year,
+        }
+
+        for line in self.body_tag:
+            yield line.format(**d)
+
+    def sign(self):
+        d = {
             'day': dt.datetime.today().day,
             'month': Months.get_month(dt.datetime.today().month),
             'year': dt.datetime.today().year
         }
-
-        return self.tag.format(**d)
+        for line in self.sign_tag:
+            yield line.format(**d)
 
 
 if __name__ == '__main__':

@@ -20,6 +20,7 @@ from pyexcel_ods3 import get_data, save_data
 from indexes import *
 from messages import *
 from models import Months, CommonInfo, Receipt
+from pdfmaker import PdfOutput
 
 SEP = ''
 test = False
@@ -93,8 +94,8 @@ def process_student(info, row, output_file):
         try:
             sm = m.get_student_month(row)
             if is_valid(sm):
-                r = Receipt(info, student, sm).template()
-                output_file.write(r)
+                r = Receipt(info, student, sm)
+                output_file.write_receipt(r)
                 row[m.processed_idx] = 'S'
                 result_list.append(r)
         except IndexError:
@@ -127,10 +128,11 @@ def ask_output(test):
     if test:
         print(ASK_OUTPUT, end=SEP)
         output_filename = input().rstrip('\n')
-        output_file = open(output_filename, 'w', encoding='utf-8')
     else:
-        output_filetypes = (("Archivo de recibos CRIS", "*.txt"),)
-        output_file = fd.asksaveasfile(initialdir=os.getcwd(), filetypes=output_filetypes)
+        output_filetypes = (("Pdfs de recibos CRIS", "*.pdf"),)
+        output_filename = fd.asksaveasfilename(initialdir=os.getcwd(), filetypes=output_filetypes)
+    logo_filename = os.path.join(os.path.dirname(output_filename), 'logo.png')
+    output_file = PdfOutput(output_filename, logo=logo_filename)
     return output_file
 
 
@@ -178,7 +180,7 @@ if __name__ == '__main__':
                     print(PROCESSING_STUDENT_MSG, '-')
                 current_row += 1
 
-        output_file.close()
+        output_file.save()
         output_data = OrderedDict()
         output_data.update({'CONTABILIDAD': data})
 
