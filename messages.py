@@ -43,5 +43,10 @@ END_MESSAGES = [
     'Ahora es cuando olvidaste donde guardaste el fichero.',
     'Sé lo duro que es ser autónomo. Como máquina que empatiza, esto es lo que he podido hacer',
     'Soy más rápido que tu iPad, reconócelo',
-
+    'No lo he hecho más rápido porque no soy un MAC',
+    'Si esto lo hubieses hecho en Santiago, te llevabas una tapa de regalo',
+    'Rima: Si Queco fue al Eco, \n¿Estefanía a donde iría?',
+    'Tío, no sabes cuanto siento que estés aquí en vez de surfear. Ánimo.',
+    'Aún tenemos pendiente ver "Karate Christmas miracle". Y tú aquí, haciendo estas mierdas.',
+    'Macaulay Culkin, Macaulay Culkin. Macaulay, Macaulay, Macaulay Culkin...',
 ]
